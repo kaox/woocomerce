@@ -39,6 +39,7 @@ services:
       - wp_data:/var/www/html
       - ./init.sh:/scripts/init.sh
       - ./pages:/scripts/pages
+      - ./data:/scripts/data
     environment:
       # Credenciales de BD
       WORDPRESS_DB_HOST: db:3306

@@ -203,14 +203,17 @@ wp eval '
           $variation->set_image_id( $att_map[ $img_name ] );
       }
 
-      // Atributos de variación (un valor exacto por atributo)
+      // Atributos de variación: WC espera el SLUG del término, no el nombre
       $var_attrs = array();
       for ( $i = 1; $i <= 2; $i++ ) {
           $aname = trim( $row[ "Attribute $i name" ] ?? "" );
           $aval  = trim( $row[ "Attribute $i value(s)" ] ?? "" );
           if ( ! $aname || ! $aval ) continue;
-          $taxonomy             = wc_attribute_taxonomy_name( $aname );
-          $var_attrs[ $taxonomy ] = $aval;
+          $taxonomy = wc_attribute_taxonomy_name( $aname );
+          // Obtener el slug real del término (WC guarda el slug, no el nombre)
+          $term = get_term_by( "name", $aval, $taxonomy );
+          $slug = $term ? $term->slug : sanitize_title( $aval );
+          $var_attrs[ $taxonomy ] = $slug;
       }
       $variation->set_attributes( $var_attrs );
 

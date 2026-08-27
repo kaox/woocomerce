@@ -1,6 +1,10 @@
 SKU,Type,Name,Short description,Regular price,Brands,Categories,Published,In stock?,Visibility in catalog,Parent,Attribute 1 name,Attribute 1 value(s),Attribute 1 visible,Attribute 1 global,Attribute 2 name,Attribute 2 value(s),Attribute 2 visible,Attribute 2 global,Images
-ENS-001,variable,ENSURE ADVANCE X 850G,,,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,hidden,,Marca,Ensure,1,1,Sabor,"Vainilla, Chocolate",1,1,ensure-advance-x-850g.webp
-ENS-001-V01,variation,ENSURE ADVANCE X 850G VAINILLA,,130.20,ENSURE,,1,1,visible,SUP-01,Marca,Ensure,1,1,Sabor,Vainilla,0,1,ensure-advance-x-850g-vainilla.webp
-ENS-001-V02,variation,ENSURE ADVANCE X 850G CHOCOLATE,,128.8,ENSURE,,1,1,visible,SUP-01,Marca,Ensure,1,1,Sabor,Chocolate,0,1,ensure-advance-x-850g-chocolate.webp
+ENS-001,variable,ENSURE ADVANCE X 850G,,,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,hidden,,Marca,Ensure,1,1,Sabor,"Vainilla, Chocolate",1,1,ensure-advance-x-850g-vainilla.webp
+ENS-001-V01,variation,ENSURE ADVANCE X 850G VAINILLA,,130.20,ENSURE,,1,1,visible,ENS-001,Marca,Ensure,1,1,Sabor,Vainilla,0,1,ensure-advance-x-850g-vainilla.webp
+ENS-001-V02,variation,ENSURE ADVANCE X 850G CHOCOLATE,,128.8,ENSURE,,1,1,visible,ENS-001,Marca,Ensure,1,1,Sabor,Chocolate,0,1,ensure-advance-x-850g-chocolate.webp
 ENS-002,simple,ENSURE ADVANCE X 400G VAINILLA,,75.60,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Ensure,1,1,,,,,ensure-advance-x-400g-vainilla.webp
 ENS-003,simple,ENSURE BASE X 850G VAINILLA,,105.00,ENSURE,Suplemento y Nutrición > Nutrición Adultos,1,1,visible,,Marca,Ensure,1,1,,,,,ensure-base-x-850g-vainilla.webp
+PED-004,simple,PEDIASURE PEPTIGRO X 1600G VAINILLA,,221.20,PEDIASURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Pediasure,1,1,,,,,pediasure-peptigro-x-1600g-vainilla.webp
+PED-005,variable,PEDIASURE PEPTIGRO X 850G,,,PEDIASURE,Suplemento y Nutrición > Nutrición Infantil,1,1,hidden,,Marca,Pediasure,1,1,Sabor,"Vainilla, Chocolate",1,1,pediasure-peptigro-x-850g.webp
+PED-005-V01,variation,PEDIASURE PEPTIGRO X 850G VAINILLA,,128.80,PEDIASURE,,1,1,visible,PED-005,Marca,Pediasure,1,1,Sabor,Vainilla,0,1,pediasure-peptigro-x-850g-vainilla.webp
+PED-005-V02,variation,PEDIASURE PEPTIGRO X 850G CHOCOLATE,,128.80,PEDIASURE,,1,1,visible,PED-005,Marca,Pediasure,1,1,Sabor,Chocolate,0,1,pediasure-peptigro-x-850g-chocolate.webp

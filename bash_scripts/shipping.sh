@@ -19,7 +19,7 @@ wp eval '
     foreach($csv as $row) {
         if(count($row) < 4) continue;
         
-        $distrito = mb_strtoupper(trim($row[0]), 'UTF-8');
+        $distrito = mb_strtoupper(trim($row[0]), "UTF-8");
         $rates[$distrito] = array(
             "ubigeo" => trim($row[1]),
             "costo"  => floatval($row[2]),

@@ -37,11 +37,7 @@ services:
       - wordpress
     volumes:
       - wp_data:/var/www/html
-      - ./bash_scripts/init.sh:/scripts/init.sh
-      - ./bash_scripts/shipping.sh:/scripts/shipping.sh
-      - ./bash_scripts/import-products.sh:/scripts/import-products.sh
-      - ./bash_scripts/fix-ubigeo.sh:/scripts/fix-ubigeo.sh
-      - ./bash_scripts/payment-methods.sh:/scripts/payment-methods.sh
+      - ./bash_scripts:/scripts
       - ./pages:/scripts/pages
       - ./data:/scripts/data
     environment:

@@ -83,4 +83,8 @@ echo "📦 Ejecutando submódulo de fix ubigeo..."
 chmod +x /scripts/fix-ubigeo.sh
 bash /scripts/fix-ubigeo.sh
 
+echo "📦 Inyectando panel administrador de tarifas CSV..."
+chmod +x /scripts/install-importer.sh
+bash /scripts/install-importer.sh
+
 echo "✅ ¡Instalación automática completada con éxito!"

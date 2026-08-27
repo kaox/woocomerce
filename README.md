@@ -1,18 +1,28 @@
-# 🚀 Infraestructura Automatizada de WordPress con Docker
+# 🚀 Tienda WooCommerce Automatizada con Docker y WP-CLI
 
-Este proyecto levanta un entorno completo de WordPress utilizando Docker Compose. Además, automatiza la instalación inicial utilizando **WP-CLI**, configurando automáticamente temas, plugins (como WooCommerce), plantillas de Astra y creando páginas personalizadas a partir de archivos HTML locales sin intervención manual.
+Este proyecto despliega un entorno completo de WordPress y WooCommerce utilizando Docker Compose. Está diseñado para realizar una instalación desatendida (Zero-Touch) que configura la tienda, importa productos, establece tarifas de envío por distritos y aplica un diseño profesional sin necesidad de hacer clics manuales.
+
+## ✨ Características Principales
+
+*   **Instalación Silenciosa:** Configura WordPress, base de datos y credenciales automáticamente.
+*   **Diseño Profesional:** Instala y activa la plantilla *Brandstore* de Astra.
+*   **Catálogo Automático:** Importa productos de forma masiva desde un archivo CSV.
+*   **Páginas Legales:** Genera páginas (Términos, Políticas) a partir de archivos HTML locales.
+*   **Envíos Dinámicos:** Configura zonas de envío y tarifas condicionales (ej. Envío Gratis por compras mayores a S/.100) en distritos de Perú.
+*   **Asistente Omitido:** Deshabilita las pantallas de bienvenida de WooCommerce para ir directo al grano.
 
 ## 📁 Estructura del Proyecto
 
-Asegúrate de que tus archivos estén organizados de la siguiente manera antes de iniciar:
-
 ```text
 📁 tu-proyecto/
- ├── 📄 docker-compose.yml  # Configuración de los contenedores Docker
- ├── 📄 .env                # Variables de entorno (Credenciales, plugins y tema)
- ├── 📄 init.sh             # Script de automatización de WP-CLI
- └── 📁 pages/              # Carpeta para tus páginas en formato HTML
-      └── 📄 terminos.html  # Ejemplo: Código HTML para la página de Términos
+ ├── 📄 docker-compose.yml  # Orquestador de contenedores (WP, DB, WP-CLI)
+ ├── 📄 .env                # Variables de configuración y credenciales
+ ├── 📄 init.sh             # Script principal de automatización
+ ├── 📄 shipping.sh         # Submódulo para reglas de envío y distritos
+ ├── 📁 data/               
+ │    └── 📄 productos.csv  # Archivo de importación de WooCommerce
+ └── 📁 pages/              
+      └── 📄 *.html         # Código fuente para tus páginas legales
 ```
 
 ## 🛠️ Requisitos Previos
@@ -21,8 +31,7 @@ Asegúrate de que tus archivos estén organizados de la siguiente manera antes d
 - Docker Compose instalado.
 
 ## ⚙️ Configuración
-1. Variables de Entorno (.env)
-Abre el archivo .env y configura los datos de tu sitio, credenciales de base de datos y los plugins/tema que deseas instalar.
+Variables: Edita el archivo .env con el nombre de tu sitio y tus datos de administrador.
 
 Fragmento de código
 WP_PLUGINS=woocommerce elementor wordpress-seo contact-form-7 astra-sites
@@ -32,7 +41,12 @@ SITE_TITLE="Mi Tienda Automática"
 WP_ADMIN_USER=admin
 WP_ADMIN_PASSWORD=admin123
 WP_ADMIN_EMAIL=admin@tudominio.com
-...
+
+Productos: Reemplaza el archivo data/productos.csv con tu propio catálogo respetando las cabeceras estándar de WooCommerce.
+
+Envíos: Si deseas modificar las tarifas o agregar distritos, edita el array DISTRIBUTION_LIST dentro del archivo shipping.sh.
+
+
 2. Páginas Personalizadas (HTML)
 Coloca el código HTML de las páginas que deseas crear automáticamente dentro de la carpeta pages/. Puedes crear tantos archivos como necesites (ej. privacidad.html, nosotros.html).
 

@@ -1,43 +1,6 @@
-ID,Type,SKU,"GTIN, UPC, EAN, or ISBN",Name,Published,"Is featured?","Visibility in catalog","Short description",Description,"Date sale price starts","Date sale price ends","Tax status","Tax class","In stock?",Stock,"Low stock amount","Backorders allowed?","Sold individually?","Weight (kg)","Length (cm)","Width (cm)","Height (cm)","Allow customer reviews?","Purchase note","Sale price","Regular price",Categories,Tags,"Shipping class",Images,"Download limit","Download expiry days",Parent,"Grouped products",Upsells,Cross-sells,"External URL","Button text",Position,Brands,"Attribute 1 name","Attribute 1 value(s)","Attribute 1 visible","Attribute 1 global","Attribute 2 name","Attribute 2 value(s)","Attribute 2 visible","Attribute 2 global","Meta: cartflows_redirect_flow_id","Meta: cartflows_add_to_cart_text","Meta: site-sidebar-layout","Meta: ast-site-content-layout","Meta: site-content-style","Meta: site-sidebar-style","Meta: theme-transparent-header-meta","Meta: astra-migrate-meta-layouts"
-399,variable,PED-005,,"PEDIASURE PEPTIGRO X 850G",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,PEDIASURE,Marca,Pediasure,1,1,Sabor,"Chocolate, Vainilla",1,1,,,default,default,default,default,default,set
-400,variable,ENS-001,,"ENSURE ADVANCE X 850G",1,0,visible,,,,,taxable,,0,,,0,0,,,,,1,,,,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,ENSURE,Marca,Ensure,1,1,Sabor,"Chocolate, Vainilla",1,1,,,default,default,default,default,default,set
-403,simple,ENS-002,,"ENSURE ADVANCE X 400G VAINILLA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,75.60,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,ENSURE,,,,,,,,,,,,,,,,
-404,simple,ENS-003,,"ENSURE BASE X 850G VAINILLA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,105.00,"Suplemento y Nutrición > Nutrición Adultos",,,,,,,,,,,,0,ENSURE,,,,,,,,,,,,,,,,
-405,simple,PED-004,,"PEDIASURE PEPTIGRO X 1600G VAINILLA",1,0,hidden,,,,,taxable,,1,,,0,0,,,,,1,,,221.20,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,PEDIASURE,,,,,,,,,,,,,,,,
-406,variation,PED-005-V01,,"PEDIASURE PEPTIGRO X 850G - Vainilla",1,0,visible,,,,,taxable,parent,1,,,0,0,,,,,0,,,128.80,,,,,,,PED-005,,,,,,0,PEDIASURE,Marca,,,1,Sabor,Vainilla,,1,,,,,,,,
-407,variation,PED-005-V02,,"PEDIASURE PEPTIGRO X 850G - Chocolate",1,0,visible,,,,,taxable,parent,1,,,0,0,,,,,0,,,128.80,,,,,,,PED-005,,,,,,0,PEDIASURE,Marca,,,1,Sabor,Chocolate,,1,,,,,,,,
-408,simple,PED-006,,"PEDIASURE PEPTIGRO X 400G VAINILLA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,75.60,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,PEDIASURE,,,,,,,,,,,,,,,,
-409,simple,PED-007,,"PEDIASURE LIQUIDO X 220ML VAINILLA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,12.60,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,PEDIASURE,Marca,Pediasure,1,1,,,,,,,,,,,,
-410,simple,PED-008,,"PEDIASURE UP AGE X 850G VAINILLA 10+",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,128.80,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,PEDIASURE,,,,,,,,,,,,,,,,
-411,simple,GLU-009,,"GLUCERNA X 850G VAINILLA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,162.40,"Suplemento y Nutrición > Nutrición Adultos",,,,,,,,,,,,0,GLUCERNA,,,,,,,,,,,,,,,,
-412,simple,GLU-010,,"GLUCERNA LIQUIDO X 220ML VAINILLA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,16.10,"Suplemento y Nutrición > Nutrición Adultos",,,,,,,,,,,,0,GLUCERNA,,,,,,,,,,,,,,,,
-413,simple,NES-011,,"NESTUM X 350G ARROZ",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,21.00,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,NESTUM,,,,,,,,,,,,,,,,
-414,simple,NES-012,,"NESTUM X 350G 5 CEREALES",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,21.00,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,NESTUM,,,,,,,,,,,,,,,,
-415,simple,NES-013,,"NESTUM X 350G TRIGO & QUINUA",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,21.00,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,NESTUM,,,,,,,,,,,,,,,,
-416,simple,NES-014,,"NESTUM X 350G TRIGO & MIEL",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,21.00,"Suplemento y Nutrición > Nutrición Infantil",,,,,,,,,,,,0,NESTUM,,,,,,,,,,,,,,,,
-417,simple,PLE-015,,"PLENITUD PRACTIPAÑAL X 10 (PACK X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,21.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-418,simple,PLE-016,,"PLENITUD PRACTIPAÑAL X 20 (PACK X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,33.60,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-419,simple,PLE-017,,"PLENITUD CLASSIC M/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,46.20,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-420,simple,PLE-018,,"PLENITUD CLASSIC M/20 (PLANCHA X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,134.40,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-421,simple,PLE-019,,"PLENITUD CLASSIC G/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,46.20,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-422,simple,PLE-020,,"PLENITUD CLASSIC G/20  (PLANCHA X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,134.40,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-423,simple,PLE-021,,"PLENITUD PROTECT M/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,67.20,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-424,simple,PLE-022,,"PLENITUD PROTECT M/20 (PLANCHA X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,189.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-425,simple,PLE-023,,"PLENITUD PROTECT G/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,67.20,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-426,simple,PLE-024,,"PLENITUD PROTECT G/20 (PLANCHA X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,189.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-427,simple,PLE-025,,"PLENITUD PROTECTOR CAMA X 10",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,28.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PLENITUD,,,,,,,,,,,,,,,,
-428,simple,TEN-026,,"TENA SLIP ULTRA PROTECT M/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,75.60,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-429,simple,TEN-027,,"TENA SLIP ULTRA PROTECT M/20 (PACK X 4)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,302.40,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-430,simple,TEN-028,,"TENA SLIP ULTRA PROTECT G/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,75.60,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-431,simple,TEN-029,,"TENA SLIP ULTRA PROTECT G/20 (PACK X 4)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,302.40,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-432,simple,TEN-030,,"TENA PANTS ULTRA PROTECT M/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,74.20,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-433,simple,TEN-031,,"TENA PANTS ULTRA PROTECT M/20 (PACK X 4)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,296.80,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-434,simple,TEN-032,,"TENA PANTS ULTRA PROTECT G/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,74.20,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-435,simple,TEN-033,,"TENA PANTS ULTRA PROTECT G/20 (PACK X 4)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,296.80,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,TENA,,,,,,,,,,,,,,,,
-436,simple,COT-034,,"COTIDIAN PREMIUM M/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,56.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,COTIDIAN,,,,,,,,,,,,,,,,
-437,simple,COT-035,,"COTIDIAN PREMIUM G/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,56.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,COTIDIAN,,,,,,,,,,,,,,,,
-438,simple,PRU-036,,"PRUDENTIAL COMFORT TOTAL M/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,49.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PRUDENTIAL,,,,,,,,,,,,,,,,
-439,simple,PRU-037,,"PRUDENTIAL COMFORT TOTAL G/20",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,49.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PRUDENTIAL,,,,,,,,,,,,,,,,
-440,simple,PRU-038,,"PRUDENTIAL INVISIBLE M/18",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,49.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PRUDENTIAL,,,,,,,,,,,,,,,,
-441,simple,PRU-039,,"PRUDENTIAL INVISIBLE G/16",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,49.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PRUDENTIAL,,,,,,,,,,,,,,,,
-442,simple,PRU-040,,"PRUDENTIAL APOSITO X 20 (PACK X 3)",1,0,visible,,,,,taxable,,1,,,0,0,,,,,1,,,21.00,"Pañales y Cuidado Personal > Adultos",,,,,,,,,,,,0,PRUDENTIAL,,,,,,,,,,,,,,,,
+SKU,Type,Name,Short description,Regular price,Brands,Categories,Published,In stock?,Visibility in catalog,Parent,Attribute 1 name,Attribute 1 value(s),Attribute 1 visible,Attribute 1 global,Attribute 2 name,Attribute 2 value(s),Attribute 2 visible,Attribute 2 global,Images
+ENS-001,variable,ENSURE ADVANCE X 850G,,,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,hidden,,Marca,Ensure,1,1,Sabor,"Vainilla, Chocolate",1,1,ensure-advance-x-850g.webp
+ENS-001-V01,variation,ENSURE ADVANCE X 850G VAINILLA,,130.20,ENSURE,,1,1,visible,SUP-01,Marca,Ensure,1,1,Sabor,Vainilla,0,1,ensure-advance-x-850g-vainilla.webp
+ENS-001-V02,variation,ENSURE ADVANCE X 850G CHOCOLATE,,128.8,ENSURE,,1,1,visible,SUP-01,Marca,Ensure,1,1,Sabor,Chocolate,0,1,ensure-advance-x-850g-chocolate.webp
+ENS-002,simple,ENSURE ADVANCE X 400G VAINILLA,,75.60,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Ensure,1,1,,,,,ensure-advance-x-400g-vainilla.webp
+ENS-003,simple,ENSURE BASE X 850G VAINILLA,,105.00,ENSURE,Suplemento y Nutrición > Nutrición Adultos,1,1,visible,,Marca,Ensure,1,1,,,,,ensure-base-x-850g-vainilla.webp

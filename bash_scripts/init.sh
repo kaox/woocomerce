@@ -67,6 +67,10 @@ echo "🔗 Actualizando enlaces permanentes (Permalinks)..."
 wp rewrite structure '/%postname%/' --hard
 wp rewrite flush
 
+echo "🚀 Ejecutando submódulo de optimización de imágenes..."
+chmod +x /scripts/optimize-images.sh
+bash /scripts/optimize-images.sh
+
 echo "📦 Ejecutando submódulo de productos..."
 chmod +x /scripts/import-products.sh
 bash /scripts/import-products.sh

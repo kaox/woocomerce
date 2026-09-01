@@ -1,10 +1,17 @@
-SKU,Type,Name,Short description,Regular price,Brands,Categories,Published,In stock?,Visibility in catalog,Parent,Attribute 1 name,Attribute 1 value(s),Attribute 1 visible,Attribute 1 global,Attribute 2 name,Attribute 2 value(s),Attribute 2 visible,Attribute 2 global,Images
-ENS-001,variable,ENSURE ADVANCE X 850G,,,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Ensure,1,1,Sabor,"Vainilla, Chocolate",1,1,ensure-advance-x-850g-vainilla.webp
-ENS-001-V01,variation,ENSURE ADVANCE X 850G VAINILLA,,130.20,ENSURE,,1,1,visible,ENS-001,Marca,Ensure,1,1,Sabor,Vainilla,0,1,ensure-advance-x-850g-vainilla.webp
-ENS-001-V02,variation,ENSURE ADVANCE X 850G CHOCOLATE,,128.8,ENSURE,,1,1,visible,ENS-001,Marca,Ensure,1,1,Sabor,Chocolate,0,1,ensure-advance-x-850g-chocolate.webp
-ENS-002,simple,ENSURE ADVANCE X 400G VAINILLA,,75.60,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Ensure,1,1,,,,,ensure-advance-x-400g-vainilla.webp
-ENS-003,simple,ENSURE BASE X 850G VAINILLA,,105.00,ENSURE,Suplemento y Nutrición > Nutrición Adultos,1,1,visible,,Marca,Ensure,1,1,,,,,ensure-base-x-850g-vainilla.webp
-PED-004,simple,PEDIASURE PEPTIGRO X 1600G VAINILLA,,221.20,PEDIASURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Pediasure,1,1,,,,,pediasure-peptigro-x-1600g-vainilla.webp
-PED-005,variable,PEDIASURE PEPTIGRO X 850G,,,PEDIASURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,Marca,Pediasure,1,1,Sabor,"Vainilla, Chocolate",1,1,pediasure-peptigro-x-850g.webp
-PED-005-V01,variation,PEDIASURE PEPTIGRO X 850G VAINILLA,,128.80,PEDIASURE,,1,1,visible,PED-005,Marca,Pediasure,1,1,Sabor,Vainilla,0,1,pediasure-peptigro-x-850g-vainilla.webp
-PED-005-V02,variation,PEDIASURE PEPTIGRO X 850G CHOCOLATE,,128.80,PEDIASURE,,1,1,visible,PED-005,Marca,Pediasure,1,1,Sabor,Chocolate,0,1,pediasure-peptigro-x-850g-chocolate.webp
+SKU,Type,Name,Short description,Regular price,Sale price,Brands,Categories,Published,In stock?,Visibility in catalog,Parent,Images,Attribute 1 name,Attribute 1 value(s),Attribute 1 visible,Attribute 1 global,Attribute 2 name,Attribute 2 value(s),Attribute 2 visible,Attribute 2 global,Attribute 3 name,Attribute 3 value(s),Attribute 3 visible,Attribute 3 global
+ENS-001,variable,ENSURE ADVANCE X 850G,,,,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,ensure-advance-x-850g.webp,Marca,Ensure,1,1,Sabor,"Vainilla, Chocolate",1,1,,,,
+ENS-001-V01,variation,ENSURE ADVANCE X 850G VAINILLA,,130.20,,ENSURE,,1,1,visible,ENS-001,ensure-advance-x-850g-vainilla.webp,Marca,Ensure,1,1,Sabor,Vainilla,0,1,,,,
+ENS-001-V02,variation,ENSURE ADVANCE X 850G CHOCOLATE,,128.8,,ENSURE,,1,1,visible,ENS-001,ensure-advance-x-850g-chocolate.webp,Marca,Ensure,1,1,Sabor,Chocolate,0,1,,,,
+ENS-002,simple,ENSURE ADVANCE X 400G VAINILLA,,75.60,,ENSURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,ensure-advance-x-400g-vainilla.webp,Marca,Ensure,1,1,,,,,,,,
+ENS-003,simple,ENSURE BASE X 850G VAINILLA,,105.00,,ENSURE,Suplemento y Nutrición > Nutrición Adultos,1,1,visible,,ensure-base-x-850g-vainilla.webp,Marca,Ensure,1,1,,,,,,,,
+PED-004,simple,PEDIASURE PEPTIGRO X 1600G VAINILLA,,221.20,,PEDIASURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,pediasure-peptigro-x-1600g-vainilla.webp,Marca,Pediasure,1,1,,,,,,,,
+PED-005,variable,PEDIASURE PEPTIGRO X 850G,,,,PEDIASURE,Suplemento y Nutrición > Nutrición Infantil,1,1,visible,,pediasure-peptigro-x-850g.webp,Marca,Pediasure,1,1,Sabor,"Vainilla, Chocolate",1,1,,,,
+PED-005-V01,variation,PEDIASURE PEPTIGRO X 850G VAINILLA,,128.80,,PEDIASURE,,1,1,visible,PED-005,pediasure-peptigro-x-850g-vainilla.webp,Marca,Pediasure,1,1,Sabor,Vainilla,0,1,,,,
+PED-005-V02,variation,PEDIASURE PEPTIGRO X 850G CHOCOLATE,,128.80,,PEDIASURE,,1,1,visible,PED-005,pediasure-peptigro-x-850g-chocolate.webp,Marca,Pediasure,1,1,Sabor,Chocolate,0,1,,,,
+PLE-006,simple,PLENITUD PRACTIPAÑAL X 10 (PACK X 3),,21.00,,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,,plenitud-practipañal-x-10-(pack-x-3).webp,Marca,Plenitud,1,1,,,,,,,,
+PLE-007,simple,PLENITUD PRACTIPAÑAL X 20 (PACK X 3),,33.60,,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,,plenitud-practipañal-x-20-(pack-x-3).webp,Marca,Plenitud,1,1,,,,,,,,
+PLE-008,variable,PLENITUD CLASSIC,,,,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,,plenitud-classic.webp,Marca,Plenitud,1,1,Talla,"M, G",1,1,Presentación,"20 u, Pack 3 x 20 u",1,1
+PLE-008-V01,variation,PLENITUD CLASSIC M/20,,46.20,,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,PLE-008,plenitud-classic-m-20.webp,Marca,Plenitud,1,1,Talla,M,0,1,Presentación,20 u,0,1
+PLE-008-V02,variation,PLENITUD CLASSIC M/20 (PLANCHA X 3),,138.6,134.4,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,PLE-008,plenitud-classic-m-20-(plancha-x-3).webp,Marca,Plenitud,1,1,Talla,M,0,1,Presentación,Pack 3 x 20 u,0,1
+PLE-008-V03,variation,PLENITUD CLASSIC G/20,,46.20,,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,PLE-008,plenitud-classic-g-20.webp,Marca,Plenitud,1,1,Talla,G,0,1,Presentación,20 u,0,1
+PLE-008-V04,variation,PLENITUD CLASSIC G/20  (PLANCHA X 3),,138.6,134.40,PLENITUD,Pañales y Cuidado Personal > Adultos,1,1,visible,PLE-008,plenitud-classic-g-20--(plancha-x-3).webp,Marca,Plenitud,1,1,Talla,G,0,1,Presentación,Pack 3 x 20 u,0,1

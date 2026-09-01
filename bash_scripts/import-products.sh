@@ -75,7 +75,7 @@ wp eval '
   // ── Preparar atributos de un row del CSV ─────────────────────────────────────
   function build_attributes( $row, $is_variable ) {
       $attrs = array();
-      for ( $i = 1; $i <= 2; $i++ ) {
+      for ( $i = 1; $i <= 3; $i++ ) {
           $aname = trim( $row[ "Attribute $i name" ] ?? "" );
           $avals = trim( $row[ "Attribute $i value(s)" ] ?? "" );
           if ( ! $aname || ! $avals ) continue;
@@ -205,7 +205,7 @@ wp eval '
 
       // Atributos de variación: WC espera el SLUG del término, no el nombre
       $var_attrs = array();
-      for ( $i = 1; $i <= 2; $i++ ) {
+      for ( $i = 1; $i <= 3; $i++ ) {
           $aname = trim( $row[ "Attribute $i name" ] ?? "" );
           $aval  = trim( $row[ "Attribute $i value(s)" ] ?? "" );
           if ( ! $aname || ! $aval ) continue;

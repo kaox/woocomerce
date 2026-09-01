@@ -52,13 +52,9 @@ wp language plugin install --all es_ES
 wp language theme install --all es_ES
 
 echo "📄 Creando páginas automáticas..."
-# Crear Libro de Reclamaciones
-wp post create --post_type=page --post_title="Libro de Reclamaciones" --post_content="Aquí va el formulario de tu libro de reclamaciones." --post_status=publish
-
-# Crear Políticas de Envío
-wp post create --post_type=page --post_title="Políticas de Envío" --post_content="Nuestros envíos tardan entre 24 y 48 horas..." --post_status=publish
 
 # Crear Términos y Condiciones
+wp post create /scripts/pages/libro-de-reclamaciones.html --post_type=page --post_title="Libro de Reclamaciones" --post_status=publish
 wp post create /scripts/pages/terminos-y-condiciones.html --post_type=page --post_title="Términos y Condiciones" --post_status=publish
 wp post create /scripts/pages/cambios-y-devoluciones.html --post_type=page --post_title="Cambios y Devoluciones" --post_status=publish
 wp post create /scripts/pages/politicas-de-proteccion-de-datos-personales.html --post_type=page --post_title="Políticas de Protección de Datos Personales" --post_status=publish

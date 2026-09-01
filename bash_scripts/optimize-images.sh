@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Ejecutando submódulo de optimización y registro de imágenes..."
+echo "🚀 Ejecutando submódulo de optimización (Forzando 1000x1000 1:1)..."
 
 wp eval '
   require_once( ABSPATH . "wp-admin/includes/image.php" );
@@ -10,16 +10,9 @@ wp eval '
   $source_dir = "/scripts/data/raw_images";
   $target_dir = "/var/www/html/wp-content/uploads/catalog";
 
-  if ( ! file_exists( $target_dir ) ) {
-      mkdir( $target_dir, 0755, true );
-  }
+  if ( ! file_exists( $target_dir ) ) { mkdir( $target_dir, 0755, true ); }
+  if ( ! file_exists( $source_dir ) ) { echo "❌ Carpeta no existe\n"; exit; }
 
-  if ( ! file_exists( $source_dir ) ) {
-      echo "❌ La carpeta de origen no existe: " . $source_dir . "\n";
-      exit;
-  }
-
-  // 1. Leer archivos de origen (Soporta JPG, JPEG, PNG y WEBP)
   $allowed_exts = array( "jpg", "jpeg", "png", "webp" );
   $files = array();
   $dir_items = scandir( $source_dir );
@@ -34,13 +27,6 @@ wp eval '
       }
   }
 
-  if ( empty( $files ) ) {
-      echo "⚠️ No se encontraron imágenes en: " . $source_dir . "\n";
-      exit;
-  }
-
-  echo "🖼️ Procesando " . count( $files ) . " imágenes e indexando en Medios...\n";
-
   $upload_dir = wp_upload_dir();
 
   foreach ( $files as $file ) {
@@ -53,51 +39,51 @@ wp eval '
       $mime = $info["mime"];
       $image = null;
 
-      // Cargar imagen según formato de entrada
       switch ( $mime ) {
-          case "image/jpeg":
-              $image = @imagecreatefromjpeg( $file );
-              break;
-          case "image/png":
-              $image = @imagecreatefrompng( $file );
-              break;
-          case "image/webp":
-              $image = @imagecreatefromwebp( $file );
-              break;
-          default:
-              continue 2;
+          case "image/jpeg": $image = @imagecreatefromjpeg( $file ); break;
+          case "image/png":  $image = @imagecreatefrompng( $file ); break;
+          case "image/webp": $image = @imagecreatefromwebp( $file ); break;
+          default: continue 2;
       }
-
       if ( ! $image ) continue;
 
-      // 2. Redimensionar si el ancho supera 1200px
-      $max_width = 1200;
+      // 2. FORZAR 1000x1000 SIN IMPORTAR EL TAMAÑO ORIGINAL
+      $target_size = 1000;
       $width = imagesx( $image );
       $height = imagesy( $image );
 
-      if ( $width > $max_width ) {
-          $new_width = $max_width;
-          $new_height = (int) ( $height * ( $max_width / $width ) );
-          $resized = imagecreatetruecolor( $new_width, $new_height );
-
-          if ( $mime === "image/png" || $mime === "image/webp" ) {
-              imagealphablending( $resized, false );
-              imagesavealpha( $resized, true );
-          }
-
-          imagecopyresampled( $resized, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
-          imagedestroy( $image );
-          $image = $resized;
-      } else if ( $mime === "image/png" || $mime === "image/webp" ) {
-          imagealphablending( $image, true );
-          imagesavealpha( $image, true );
+      if ( $width > $height ) {
+          $crop_size = $height;
+          $crop_x = ( $width - $height ) / 2;
+          $crop_y = 0;
+      } else {
+          $crop_size = $width;
+          $crop_x = 0;
+          $crop_y = ( $height - $width ) / 2;
       }
 
-      // 3. Guardar archivo WebP en disco
+      $resized = imagecreatetruecolor( $target_size, $target_size );
+
+      if ( $mime === "image/png" || $mime === "image/webp" ) {
+          imagealphablending( $resized, false );
+          imagesavealpha( $resized, true );
+          $transparent = imagecolorallocatealpha( $resized, 255, 255, 255, 127 );
+          imagefill( $resized, 0, 0, $transparent );
+      } else {
+          $white = imagecolorallocate( $resized, 255, 255, 255 );
+          imagefill( $resized, 0, 0, $white );
+      }
+
+      // Copia y fuerza la escala a 1000x1000 (Upscale / Downscale)
+      imagecopyresampled( $resized, $image, 0, 0, $crop_x, $crop_y, $target_size, $target_size, $crop_size, $crop_size );
+      imagedestroy( $image );
+      $image = $resized;
+
+      // 3. Guardar archivo
       imagewebp( $image, $target_webp, 80 );
       imagedestroy( $image );
 
-      // 4. Registrar en la Biblioteca de Medios de WordPress
+      // 4. Registro en WP
       $file_url = $upload_dir["baseurl"] . "/catalog/" . $filename . ".webp";
       $attachment_id = attachment_url_to_postid( $file_url );
 
@@ -106,19 +92,14 @@ wp eval '
               "guid"           => $file_url,
               "post_mime_type" => "image/webp",
               "post_title"     => $filename,
-              "post_content"   => "",
               "post_status"    => "inherit"
           );
-
           $attachment_id = wp_insert_attachment( $attachment, $target_webp );
           $attach_data = wp_generate_attachment_metadata( $attachment_id, $target_webp );
           wp_update_attachment_metadata( $attachment_id, $attach_data );
-
-          echo "✅ Registrada en Medios (ID " . $attachment_id . "): " . $filename . ".webp\n";
+          echo "✅ Registrada: " . $filename . ".webp\n";
       } else {
-          echo "✅ Ya registrada previamente (ID " . $attachment_id . "): " . $filename . ".webp\n";
+          echo "✅ Ya registrada: " . $filename . ".webp\n";
       }
   }
-
-  echo "🚀 ¡Todas las imágenes procesadas y visibles en la Biblioteca de Medios!\n";
 ' --user=${WP_ADMIN_USER}

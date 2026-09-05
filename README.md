@@ -97,3 +97,13 @@ Bash
 docker compose down -v
 
 ***
+
+
+https://secure.micuentaweb.pe/vads-merchant/
+
+https://secure.micuentaweb.pe/doc/es-PE/plugins/
+
+https://secure.micuentaweb.pe/doc/es-PE/plugins/woocommerce/sitemap.html
+
+https://www.youtube.com/watch?v=oshicDacA3A
+

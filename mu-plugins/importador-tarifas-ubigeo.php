@@ -1,12 +1,3 @@
-#!/bin/bash
-
-echo "📦 Inyectando el Plugin Importador de Tarifas en la infraestructura..."
-
-# Aseguramos que la carpeta mu-plugins exista
-mkdir -p /var/www/html/wp-content/mu-plugins
-
-# Inyectamos el código PHP directamente al contenedor
-cat << 'EOF' > /var/www/html/wp-content/mu-plugins/importador-tarifas-ubigeo.php
 <?php
 /*
 Plugin Name: Importador de Tarifas de Envío CSV
@@ -73,6 +64,3 @@ function wc_shipping_csv_page() {
     </div>
     <?php
 }
-EOF
-
-echo "✅ ¡Plugin Importador instalado exitosamente en mu-plugins!"

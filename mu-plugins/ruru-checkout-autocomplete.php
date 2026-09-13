@@ -27,7 +27,7 @@ function ruru_insert_search_address_field($fields)
         'required' => false, // Es solo un campo de búsqueda auxiliar
         'class' => array('form-row-wide', 'ruru-map-search-field'),
         'clear' => true,
-        'priority' => $email_priority + 5, // Se ubica inmediatamente después del correo
+        'priority' => 1, // Primero en el formulario (antes de Nombre/Apellidos)
     );
 
     // Opcional: Hacer lo mismo en la sección de envío si está activa
@@ -87,112 +87,190 @@ function ruru_get_autocomplete_js_script_v2()
             });
             const autocomplete = new google.maps.places.Autocomplete(searchInput, {
                     componentRestrictions: { country: 'pe' },
-                fields: ['address_components', 'formatted_address', 'name'],
+                fields: ['address_components', 'formatted_address', 'name', 'place_id'],
                 types: ['address']
             });
             autocomplete.addListener('place_changed', function() {
                     const place = autocomplete.getPlace();
-                if (!place.address_components) return;
-                let route = '', street_number = '';
+                if (!place || !place.place_id) return;
+
+                // Usamos PlacesService.getDetails para obtener TODOS los componentes
+                // (incluyendo sublocality_level_2 que es el distrito real en Lima)
+                const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+                placesService.getDetails({
+                    placeId: place.place_id,
+                    fields: ['address_components', 'formatted_address']
+                }, function(detail, status) {
+                    if (status !== google.maps.places.PlacesServiceStatus.OK || !detail) return;
+
+                    let route = '', street_number = '';
                     let distrito = '', provincia = '', departamento = '';
-                // Extraer datos de Google Maps
-                    place.address_components.forEach(component => {
-                    const types = component.types;
-                    if (types.includes('route')) route = component.long_name;
-                    if (types.includes('street_number')) street_number = component.long_name;
-                
-                        if (types.includes('locality') || types.includes('sublocality_level_1') || types.includes('administrative_area_level_3')) {
-                        if (!distrito) distrito = component.long_name;
-                    }
-                    if (types.includes('administrative_area_level_2')) {
-                        provincia = component.long_name;
-                    }
-                    if (types.includes('administrative_area_level_1')) {
-                        departamento = component.long_name;
-                    }
-                });
-                // Limpiar textos para que coincidan con el Plugin
-                    if(provincia) provincia = provincia.replace(/Provincia de/i, '').replace(/Province/i, '').trim();
-                if(departamento) departamento = departamento.replace(/Department/i, '').replace(/Región/i, '').replace(/Region/i, '').trim();
+
+                    detail.address_components.forEach(function(component) {
+                        const types = component.types;
+                        if (types.includes('route'))         route         = component.long_name;
+                        if (types.includes('street_number')) street_number = component.long_name;
+
+                        // Prioridad para el distrito (de más específico a más general):
+                        // sublocality_level_2 → sublocality_level_1 → administrative_area_level_3 → locality
+                        if (types.includes('sublocality_level_2')) {
+                            distrito = component.long_name;
+                        } else if (!distrito && types.includes('sublocality_level_1')) {
+                            distrito = component.long_name;
+                        } else if (!distrito && types.includes('administrative_area_level_3')) {
+                            distrito = component.long_name;
+                        } else if (!distrito && types.includes('locality')) {
+                            distrito = component.long_name;
+                        }
+
+                        if (types.includes('administrative_area_level_2')) provincia   = component.long_name;
+                        if (types.includes('administrative_area_level_1')) departamento = component.long_name;
+                    });
+
+                    // Normalizar textos para que coincidan con el plugin Ubigeo
+                    if (provincia)    provincia    = provincia.replace(/Provincia de/i, '').replace(/Province/i, '').trim();
+                    if (departamento) departamento = departamento.replace(/Department/i, '').replace(/Regi[oó]n/i, '').trim();
+
                     // Normalización obligatoria para Lima y Callao
-                if (departamento.includes('Metropolitana de Lima') || departamento === 'Lima') { departamento = 'Lima'; }
-                if (departamento.includes('Callao')) { departamento = 'Callao'; }
-                
-                // Si Google omite la provincia pero sabemos el departamento
-                    if (departamento === 'Lima' && !provincia) provincia = 'Lima';
-                if (departamento === 'Callao' && !provincia) provincia = 'Callao';
-                const type = id.split('_')[0]; 
-                // 1. LLENAR EL CAMPO REAL "DIRECCIÓN DE LA CALLE"
+                    if (departamento.includes('Metropolitana de Lima') || departamento === 'Lima') departamento = 'Lima';
+                    if (departamento.includes('Callao')) departamento = 'Callao';
+
+                    // Si Google omite la provincia pero sabemos el departamento
+                    if (departamento === 'Lima'   && !provincia) provincia = 'Lima';
+                    if (departamento === 'Callao' && !provincia) provincia = 'Callao';
+
+                    const type = id.split('_')[0];
+
+                    // 1. Llenar el campo "Dirección de la calle"
                     const realAddressInput = jQuery('#' + type + '_address_1');
-                if(realAddressInput.length) {
-                    realAddressInput.val((route + ' ' + street_number).trim()).trigger('change');
-                }
-                    // 2. LLENAR LOS COMBOS DESPLEGABLES EN CASCADA (AJAX)
-                ruruFillUbigeoFields(type, departamento, provincia, distrito);
+                    if (realAddressInput.length) {
+                        realAddressInput.val((route + ' ' + street_number).trim()).trigger('change');
+                    }
+
+                    // 2. Llenar los combos en cascada (Departamento → Provincia → Distrito)
+                    ruruFillUbigeoFields(type, departamento, provincia, distrito);
+                });
             });
             });
     }
-    function ruruFillUbigeoFields(type, depText, provText, distText) {
-        const normalize = str => str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : '';
-        // Función recursiva con jQuery para asegurar compatibilidad con SelectWoo y AJAX
-            const selectOption = (fieldId, text, callback) => {
+
+    // Mover el campo de búsqueda al inicio del formulario (antes de Nombre/Apellidos)
+    // Se hace vía DOM porque el tema/plugin Ubigeo ignora la prioridad PHP.
+    (function moveSearchFieldToTop() {
+        var move = function() {
+            var searchField = document.getElementById('billing_search_address_field');
+            var form = document.querySelector('.woocommerce-billing-fields__field-wrapper');
+            if (!form) form = document.querySelector('.woocommerce-billing-fields');
+            if (searchField && form) {
+                form.insertBefore(searchField, form.firstChild);
+            }
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', move);
+        } else {
+            move();
+        }
+    })();
+
+function ruruFillUbigeoFields(type, depText, provText, distText) {
+        const normalize = str => str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim() : '';
+
+        /**
+         * Busca el valor dentro de las options del select cuyo texto coincida
+         * (normalizado) con `text`. Devuelve el value o null si no lo encuentra.
+         */
+        const findOption = ($select, text) => {
+            const target = normalize(text);
+            let found = null;
+            $select.find('option').each(function() {
+                const optText = normalize(jQuery(this).text());
+                if (optText === target || optText.includes(target) || target.includes(optText)) {
+                    found = jQuery(this).val();
+                    return false;
+                }
+            });
+            return found;
+        };
+
+        /**
+         * Aplica la selección al <select> nativo y notifica a Select2 / SelectWoo.
+         */
+        const applyValue = ($select, val) => {
+            if ($select.val() === val) return;
+            $select.val(val);
+            // Evento nativo → activa el AJAX del plugin Ubigeo
+            $select.trigger('change');
+            // Select2 / SelectWoo: notificamos también con su propio evento
+            if ($select.data('select2')) {
+                $select.trigger('change.select2');
+            }
+        };
+
+        /**
+         * Intenta seleccionar una opción en `fieldId` que coincida con `text`.
+         * Si el select todavía no tiene las opciones (porque están cargando por AJAX),
+         * usa un MutationObserver para esperar a que se pueble y luego selecciona.
+         * Cuando termina (éxito o timeout) llama a `callback`.
+         */
+        const selectOption = (fieldId, text, callback) => {
             const $select = jQuery('#' + fieldId);
-            if (!$select.length || !text) {
-                if (callback) callback();
+            if (!$select.length || !text) { if (callback) callback(); return; }
+
+            // ── Intento inmediato ────────────────────────────────────────────
+            const immediate = findOption($select, text);
+            if (immediate !== null) {
+                applyValue($select, immediate);
+                // Esperamos a que el AJAX hijo cargue antes de llamar al callback
+                if (callback) setTimeout(callback, 1200);
                 return;
             }
 
-            let attempts = 0;
-            let targetText = normalize(text);
-            const trySelect = setInterval(() => {
-                attempts++;
-                let found = false;
-                let valToSelect = null;
-                // Buscar la opción correcta dentro del select
-                $select.find('option').each(function() {
-                    let optText = normalize(jQuery(this).text());
-                    if (optText === targetText || optText.includes(targetText) || targetText.includes(optText)) {
-                            valToSelect = jQuery(this).val();
-                        found = true;
-                        return false; // rompe el bucle each
-                    }
-                });
-                if (found && valToSelect) {
-                    clearInterval(trySelect);
-                    
-                        // Si el valor actual es diferente, lo cambiamos
-                        if ($select.val() !== valToSelect) {
-                            $select.val(valToSelect).trigger('change'); // Dispara el AJAX de WooCommerce/Ubigeo
-                        }
-                    
-                        // Darle 800ms al servidor para que el plugin de Ubigeo traiga las opciones hijas vía AJAX
-                        if (callback) setTimeout(callback, 800); 
-                    
-                    } else if (attempts > 20) {
-                        // Timeout después de 4 segundos (20 intentos x 200ms) para no crear bucles infinitos
-                        clearInterval(trySelect);
-                        if (callback) setTimeout(callback, 200);
-                    }
-                }, 200);
+            // ── Las opciones aún no están: esperamos con MutationObserver ───
+            const selectEl = $select[0];
+            let settled = false;
+            const TIMEOUT_MS = 6000; // máximo 6 segundos
+
+            const finish = (val) => {
+                if (settled) return;
+                settled = true;
+                observer.disconnect();
+                clearTimeout(giveUp);
+                if (val !== null) {
+                    applyValue($select, val);
+                    if (callback) setTimeout(callback, 1200);
+                } else {
+                    // No se encontró la opción tras esperar: continuamos igual
+                    if (callback) setTimeout(callback, 200);
+                }
             };
 
-            // Identificadores base (El plugin Ubigeo suele usar address_2 o un ID propio para el distrito)
-            const stateId = type + '_state';
-            const cityId = type + '_city';
-        
-            // Detección inteligente del campo de distrito
-            let distId = type + '_address_2';
-            if (jQuery('#' + type + '_distrito').length) {
-                distId = type + '_distrito';
-            }
-
-            // Ejecutar en cascada rigurosa: 1. Dpto -> (espera) -> 2. Prov -> (espera) -> 3. Dist
-            selectOption(stateId, depText, () => {
-                selectOption(cityId, provText, () => {
-                    selectOption(distId, distText);
-                });
+            const observer = new MutationObserver(() => {
+                const val = findOption($select, text);
+                if (val !== null) finish(val);
             });
-        }
+
+            observer.observe(selectEl, { childList: true, subtree: true });
+
+            const giveUp = setTimeout(() => finish(null), TIMEOUT_MS);
+        };
+
+        // ── IDs de los campos del plugin Ubigeo Perú ──────────────────────────
+        // El plugin usa billing_departamento / billing_provincia / billing_distrito.
+        // Si no existen, caemos a los IDs estándar de WooCommerce.
+        const prefix = type;
+
+        const depId  = jQuery('#' + prefix + '_departamento').length ? prefix + '_departamento' : prefix + '_state';
+        const provId = jQuery('#' + prefix + '_provincia').length    ? prefix + '_provincia'    : prefix + '_city';
+        const distId = jQuery('#' + prefix + '_distrito').length     ? prefix + '_distrito'
+                        : (jQuery('#' + prefix + '_address_2').length ? prefix + '_address_2' : '');
+
+        // ── Cascada: Departamento → (espera AJAX) → Provincia → (espera AJAX) → Distrito
+        selectOption(depId, depText, () => {
+            selectOption(provId, provText, () => {
+                if (distId) selectOption(distId, distText);
+            });
+        });
+    }
         <?php
         return ob_get_clean();
 }

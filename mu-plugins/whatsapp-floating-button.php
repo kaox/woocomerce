@@ -1,20 +1,119 @@
 <?php
 /*
   Plugin Name: Botón Flotante de WhatsApp Custom
-  Description: Agrega un botón de WhatsApp ultraligero e independiente del tema activo.
-  Version: 1.0
+  Description: Agrega un botón de WhatsApp ultraligero e independiente del tema activo con panel de control en WooCommerce.
+  Version: 1.1
 */
 
-if (!defined('ABSPATH'))
+if (!defined('ABSPATH')) {
     exit; // Seguridad
+}
 
-// 1. Inyectar estilos CSS en el <head> (Independiente del tema)
+// 1. Obtener opciones almacenadas o valores por defecto
+function rurulab_wa_get_options()
+{
+    $defaults = array(
+        'enabled' => 1,
+        'telefono' => '51947197463',
+        'mensaje' => 'Hola, necesito ayuda para elegir mis productos.',
+        'mensaje_web' => '¿Te ayudamos?',
+    );
+    return wp_parse_args(get_option('rurulab_wa_settings', array()), $defaults);
+}
+
+// 2. Registrar submenú bajo WooCommerce
+add_action('admin_menu', 'rurulab_wa_add_submenu', 99);
+function rurulab_wa_add_submenu()
+{
+    add_submenu_page(
+        'woocommerce',
+        'RuruLab - WhatsApp',
+        'RuruLab - WhatsApp',
+        'manage_woocommerce',
+        'rurulab-wa-button',
+        'rurulab_wa_options_page'
+    );
+}
+
+// 3. Renderizar el panel de administración y procesar guardado
+function rurulab_wa_options_page()
+{
+    if (!current_user_can('manage_woocommerce')) {
+        return;
+    }
+
+    // Procesar envío del formulario de manera segura
+    if (isset($_POST['rurulab_wa_save']) && check_admin_referer('rurulab_wa_nonce_action', 'rurulab_wa_nonce')) {
+        $updated_options = array(
+            'enabled' => isset($_POST['enabled']) ? 1 : 0,
+            'telefono' => sanitize_text_field($_POST['telefono']),
+            'mensaje' => sanitize_text_field($_POST['mensaje']),
+            'mensaje_web' => sanitize_text_field($_POST['mensaje_web']),
+        );
+        update_option('rurulab_wa_settings', $updated_options);
+        echo '<div class="notice notice-success is-dismissible"><p><strong>Configuración de WhatsApp guardada.</strong></p></div>';
+    }
+
+    $options = rurulab_wa_get_options();
+    ?>
+    <div class="wrap">
+        <h1>Configuración de Botón Flotante de WhatsApp</h1>
+        <form method="post" action="">
+            <?php wp_nonce_field('rurulab_wa_nonce_action', 'rurulab_wa_nonce'); ?>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row">Estado</th>
+                    <td>
+                        <label for="enabled">
+                            <input type="checkbox" id="enabled" name="enabled" value="1" <?php checked(1, $options['enabled']); ?> />
+                            Habilitar botón flotante en el sitio web
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="telefono">Teléfono</label></th>
+                    <td>
+                        <input name="telefono" type="text" id="telefono"
+                            value="<?php echo esc_attr($options['telefono']); ?>" class="regular-text"
+                            placeholder="51947197463" required />
+                        <p class="description">Ingresa el número con código de país, sin espacios ni el signo "+".</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mensaje_web">Mensaje Web (Etiqueta)</label></th>
+                    <td>
+                        <input name="mensaje_web" type="text" id="mensaje_web"
+                            value="<?php echo esc_attr($options['mensaje_web']); ?>" class="regular-text"
+                            placeholder="¿Te ayudamos?" />
+                        <p class="description">Texto visible que flota junto al ícono de WhatsApp.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mensaje">Mensaje de WhatsApp</label></th>
+                    <td>
+                        <textarea name="mensaje" id="mensaje" rows="3"
+                            class="large-text"><?php echo esc_textarea($options['mensaje']); ?></textarea>
+                        <p class="description">Texto predeterminado con el que iniciará el chat en WhatsApp.</p>
+                    </td>
+                </tr>
+            </table>
+            <?php submit_button('Guardar Cambios', 'primary', 'rurulab_wa_save'); ?>
+        </form>
+    </div>
+    <?php
+}
+
+// 4. Inyectar CSS en el <head> (solo si está habilitado)
 add_action('wp_head', 'custom_wa_button_css');
 function custom_wa_button_css()
 {
+    $options = rurulab_wa_get_options();
+    if (empty($options['enabled'])) {
+        return;
+    }
     ?>
-    <style id="kanati-wa-custom-styles">
-        .kanati-wa-wrapper {
+    <style id="rurulab-wa-custom-styles">
+        .rurulab-wa-wrapper {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -25,7 +124,7 @@ function custom_wa_button_css()
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         }
 
-        .kanati-wa-message {
+        .rurulab-wa-message {
             background-color: #ffffff;
             color: #333333;
             padding: 8px 14px;
@@ -36,7 +135,7 @@ function custom_wa_button_css()
             white-space: nowrap;
         }
 
-        .kanati-wa-button {
+        .rurulab-wa-button {
             background-color: #25d366;
             color: #ffffff;
             width: 56px;
@@ -50,13 +149,13 @@ function custom_wa_button_css()
             text-decoration: none;
         }
 
-        .kanati-wa-button:hover {
+        .rurulab-wa-button:hover {
             transform: scale(1.08);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
             color: #ffffff;
         }
 
-        .kanati-wa-button svg {
+        .rurulab-wa-button svg {
             width: 32px;
             height: 32px;
         }
@@ -76,18 +175,26 @@ function custom_wa_button_css()
     <?php
 }
 
-// 2. Inyectar estructura HTML en el <footer>
+// 5. Inyectar HTML en el <footer> (solo si está habilitado)
 add_action('wp_footer', 'custom_wa_button_html');
 function custom_wa_button_html()
 {
-    $telefono = '51947197463'; // Número con código de país
-    $mensaje = 'Hola, necesito ayuda para elegir mis productos.';
+    $options = rurulab_wa_get_options();
+    if (empty($options['enabled'])) {
+        return;
+    }
+
+    $telefono = preg_replace('/[^0-9]/', '', $options['telefono']);
+    $mensaje = $options['mensaje'];
+    $mensaje_web = $options['mensaje_web'];
     $url_wa = 'https://wa.me/' . $telefono . '?text=' . rawurlencode($mensaje);
     ?>
-    <div class="kanati-wa-wrapper">
-        <span class="kanati-wa-message" aria-hidden="true">¿Te ayudamos?</span>
+    <div class="rurulab-wa-wrapper">
+        <?php if (!empty($mensaje_web)): ?>
+            <span class="rurulab-wa-message" aria-hidden="true"><?php echo esc_html($mensaje_web); ?></span>
+        <?php endif; ?>
 
-        <a class="kanati-wa-button" href="<?php echo esc_url($url_wa); ?>" target="_blank" rel="noopener noreferrer"
+        <a class="rurulab-wa-button" href="<?php echo esc_url($url_wa); ?>" target="_blank" rel="noopener noreferrer"
             aria-label="Consultar por WhatsApp">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path

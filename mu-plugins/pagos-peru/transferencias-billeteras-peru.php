@@ -1,9 +1,12 @@
 <?php
 /**
- * Plugin Name: WooCommerce Pasarelas Manuales FREE
- * Description: Pasarelas para Billeteras Digitales (Yape/Plin) y Transferencias Bancarias (BCP, BBVA, Interbank, Scotiabank) con botones toggle. (Versión gratuita sin subida de comprobante).
+ * Plugin Name: Transferencias y Billeteras Digitales Peru FREE
+ * Description: Payment gateways for Digital Wallets (Yape and Plin) and Bank Transfers (BCP, BBVA, Interbank, Scotiabank) with toggle buttons for Peru. (Free version).
  * Version: 2.1.0
- * Author: Tu Empresa
+ * Author: kaox
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: transferencias-billeteras-peru
  */
 
 if (!defined('ABSPATH')) {
@@ -88,22 +91,22 @@ function wcmv_free_iniciar_pasarelas()
             echo '<div class="wcmv-toggles">';
             foreach ($opciones as $key => $data) {
                 echo '<div class="wcmv-toggle-btn">';
-                echo '<input type="radio" name="wcmv_billetera_seleccionada" id="billetera_' . $key . '" value="' . $key . '">';
-                echo '<label for="billetera_' . $key . '">' . $data['nombre'] . '</label>';
+                echo '<input type="radio" name="wcmv_billetera_seleccionada" id="billetera_' . esc_attr($key) . '" value="' . esc_attr($key) . '">';
+                echo '<label for="billetera_' . esc_attr($key) . '">' . esc_html($data['nombre']) . '</label>';
                 echo '</div>';
             }
             echo '</div>';
 
             foreach ($opciones as $key => $data) {
-                $numero = esc_html($this->get_option($key . '_numero'));
-                $titular = esc_html($this->get_option($key . '_titular'));
-                $qr = esc_url($this->get_option($key . '_qr'));
+                $numero = $this->get_option($key . '_numero');
+                $titular = $this->get_option($key . '_titular');
+                $qr = $this->get_option($key . '_qr');
 
-                echo '<div id="wcmv_datos_' . $key . '" class="wcmv_datos_billetera" style="display:none; text-align: center; background:#f8fafc; padding:15px; border-radius:8px; border:1px dashed #cbd5e1; margin-bottom:15px;">';
-                echo '<p style="margin:0 0 5px 0;"><strong>Número:</strong> <span style="font-size:18px; font-weight:bold; color:' . $data['color'] . ';">' . $numero . '</span></p>';
-                echo '<p style="margin:0; font-size:13px;"><strong>Titular:</strong> ' . $titular . '</p>';
+                echo '<div id="wcmv_datos_' . esc_attr($key) . '" class="wcmv_datos_billetera" style="display:none; text-align: center; background:#f8fafc; padding:15px; border-radius:8px; border:1px dashed #cbd5e1; margin-bottom:15px;">';
+                echo '<p style="margin:0 0 5px 0;"><strong>Número:</strong> <span style="font-size:18px; font-weight:bold; color:' . esc_attr($data['color']) . ';">' . esc_html($numero) . '</span></p>';
+                echo '<p style="margin:0; font-size:13px;"><strong>Titular:</strong> ' . esc_html($titular) . '</p>';
                 if (!empty($qr)) {
-                    echo '<img src="' . $qr . '" style="max-width:140px; margin-top:10px; border-radius:8px;" />';
+                    echo '<img src="' . esc_url($qr) . '" style="max-width:140px; margin-top:10px; border-radius:8px;" alt="QR" />';
                 }
                 echo '</div>';
             }
@@ -194,23 +197,23 @@ function wcmv_free_iniciar_pasarelas()
             echo '<div class="wcmv-toggles-banco">';
             foreach ($bancos_disp as $key => $nombre) {
                 echo '<div class="wcmv-toggle-banco-btn">';
-                echo '<input type="radio" name="wcmv_banco_seleccionado" id="banco_' . $key . '" value="' . $key . '">';
-                echo '<label for="banco_' . $key . '">' . $nombre . '</label>';
+                echo '<input type="radio" name="wcmv_banco_seleccionado" id="banco_' . esc_attr($key) . '" value="' . esc_attr($key) . '">';
+                echo '<label for="banco_' . esc_attr($key) . '">' . esc_html($nombre) . '</label>';
                 echo '</div>';
             }
             echo '</div>';
 
             foreach ($bancos_disp as $key => $nombre) {
-                $titular = esc_html($this->get_option($key . '_titular'));
-                $cuenta = esc_html($this->get_option($key . '_cuenta'));
-                $cci = esc_html($this->get_option($key . '_cci'));
+                $titular = $this->get_option($key . '_titular');
+                $cuenta = $this->get_option($key . '_cuenta');
+                $cci = $this->get_option($key . '_cci');
 
-                echo '<div id="wcmv_datos_' . $key . '" class="wcmv_datos_banco" style="display:none; background:#f1f5f9; padding:12px; border-radius:6px; border-left:4px solid #0f172a; margin-bottom:15px; font-size:13px;">';
-                echo '<p style="margin:0 0 4px 0;"><strong>Banco:</strong> ' . $nombre . '</p>';
-                echo '<p style="margin:0 0 4px 0;"><strong>Titular:</strong> ' . $titular . '</p>';
-                echo '<p style="margin:0 0 4px 0;"><strong>Cuenta:</strong> <span style="font-size:15px; font-weight:bold;">' . $cuenta . '</span></p>';
+                echo '<div id="wcmv_datos_' . esc_attr($key) . '" class="wcmv_datos_banco" style="display:none; background:#f1f5f9; padding:12px; border-radius:6px; border-left:4px solid #0f172a; margin-bottom:15px; font-size:13px;">';
+                echo '<p style="margin:0 0 4px 0;"><strong>Banco:</strong> ' . esc_html($nombre) . '</p>';
+                echo '<p style="margin:0 0 4px 0;"><strong>Titular:</strong> ' . esc_html($titular) . '</p>';
+                echo '<p style="margin:0 0 4px 0;"><strong>Cuenta:</strong> <span style="font-size:15px; font-weight:bold;">' . esc_html($cuenta) . '</span></p>';
                 if (!empty($cci)) {
-                    echo '<p style="margin:0;"><strong>CCI:</strong> ' . $cci . '</p>';
+                    echo '<p style="margin:0;"><strong>CCI:</strong> ' . esc_html($cci) . '</p>';
                 }
                 echo '</div>';
             }
@@ -253,15 +256,20 @@ function wcmv_free_iniciar_pasarelas()
 add_action('woocommerce_checkout_process', 'wcmv_free_validar_pagos');
 function wcmv_free_validar_pagos()
 {
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing
     if (isset($_POST['payment_method'])) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $payment_method = sanitize_text_field(wp_unslash($_POST['payment_method']));
 
-        if ($_POST['payment_method'] === 'wcmv_billeteras_free') {
+        if ($payment_method === 'wcmv_billeteras_free') {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
             if (empty($_POST['wcmv_billetera_seleccionada'])) {
                 wc_add_notice('Por favor, selecciona una billetera digital.', 'error');
             }
         }
 
-        if ($_POST['payment_method'] === 'wcmv_bancos_free') {
+        if ($payment_method === 'wcmv_bancos_free') {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
             if (empty($_POST['wcmv_banco_seleccionado'])) {
                 wc_add_notice('Por favor, selecciona un banco para la transferencia.', 'error');
             }
@@ -275,32 +283,39 @@ function wcmv_free_validar_pagos()
 add_action('woocommerce_checkout_update_order_meta', 'wcmv_free_guardar_datos_orden');
 function wcmv_free_guardar_datos_orden($order_id)
 {
-    if (!isset($_POST['payment_method']))
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing
+    if (!isset($_POST['payment_method'])) {
         return;
+    }
 
     $order = wc_get_order($order_id);
-    if (!$order)
+    if (!$order) {
         return;
+    }
 
     $has_changes = false;
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing
+    $payment_method = sanitize_text_field(wp_unslash($_POST['payment_method']));
 
     // BILLETERAS
-    if ($_POST['payment_method'] === 'wcmv_billeteras_free' && !empty($_POST['wcmv_billetera_seleccionada'])) {
-        $metodo = strtoupper(sanitize_text_field($_POST['wcmv_billetera_seleccionada']));
+    if ($payment_method === 'wcmv_billeteras_free' && !empty($_POST['wcmv_billetera_seleccionada'])) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $metodo = strtoupper(sanitize_text_field(wp_unslash($_POST['wcmv_billetera_seleccionada'])));
         $order->update_meta_data('_tipo_pago_general', 'Billetera Digital');
         $order->update_meta_data('_metodo_seleccionado', $metodo);
         $has_changes = true;
-        
+
         $order->add_order_note("El cliente ha seleccionado el pago mediante Billetera Digital ({$metodo}).");
     }
 
     // BANCOS
-    if ($_POST['payment_method'] === 'wcmv_bancos_free' && !empty($_POST['wcmv_banco_seleccionado'])) {
-        $metodo = strtoupper(sanitize_text_field($_POST['wcmv_banco_seleccionado']));
+    if ($payment_method === 'wcmv_bancos_free' && !empty($_POST['wcmv_banco_seleccionado'])) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $metodo = strtoupper(sanitize_text_field(wp_unslash($_POST['wcmv_banco_seleccionado'])));
         $order->update_meta_data('_tipo_pago_general', 'Transferencia Bancaria');
         $order->update_meta_data('_metodo_seleccionado', $metodo);
         $has_changes = true;
-        
+
         $order->add_order_note("El cliente ha seleccionado el pago mediante Transferencia Bancaria ({$metodo}).");
     }
 
@@ -320,13 +335,13 @@ function wcmv_free_mostrar_admin_info($order)
 
     if ($metodo_especifico) {
         echo '<div style="margin-top:20px; padding:15px; background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px;">';
-        echo '<h3 style="margin-top:0; color:#0369a1; font-size:14px;">Detalles del Pago Manual</h3>';
+        echo '<h3 style="margin-top:0; color:#0369a1; font-size:14px;">' . esc_html__('Detalles del Pago Manual', 'transferencias-billeteras-peru') . '</h3>';
 
         if ($tipo_general) {
-            echo '<p style="margin:0 0 5px 0;"><strong>Tipo de Pago:</strong> ' . esc_html($tipo_general) . '</p>';
+            echo '<p style="margin:0 0 5px 0;"><strong>' . esc_html__('Tipo de Pago:', 'transferencias-billeteras-peru') . '</strong> ' . esc_html($tipo_general) . '</p>';
         }
 
-        echo '<p style="margin:0 0 10px 0;"><strong>Método Específico:</strong> <span style="background:#0284c7; color:#fff; padding:3px 8px; border-radius:4px; font-weight:bold; font-size:12px;">' . esc_html($metodo_especifico) . '</span></p>';
+        echo '<p style="margin:0 0 10px 0;"><strong>' . esc_html__('Método Específico:', 'transferencias-billeteras-peru') . '</strong> <span style="background:#0284c7; color:#fff; padding:3px 8px; border-radius:4px; font-weight:bold; font-size:12px;">' . esc_html($metodo_especifico) . '</span></p>';
         echo '</div>';
     }
 }

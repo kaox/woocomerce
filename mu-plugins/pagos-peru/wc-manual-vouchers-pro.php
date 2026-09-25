@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: WooCommerce Pasarelas Manuales PRO
- * Description: Pasarelas para Billeteras Digitales (Yape/Plin) y Transferencias Bancarias (BCP, BBVA, Interbank, Scotiabank) con botones toggle y subida de voucher.
- * Version: 2.1.0
+ * Description: Pasarelas para Billeteras Digitales (Yape/Plin) y Transferencias Bancarias (BCP, BBVA, Interbank, Scotiabank) con botones toggle y subida de voucher aislada.
+ * Version: 2.2.0
  * Author: Tu Empresa
  */
 
@@ -315,7 +315,7 @@ function wcmv_pro_validar_pagos()
 }
 
 // ==========================================
-// 4. GUARDAR METADATOS Y ARCHIVO (ACTUALIZADO HPOS)
+// 4. GUARDAR METADATOS Y ARCHIVO (RENOMBRADO + CARPETA AISLADA)
 // ==========================================
 add_action('woocommerce_checkout_update_order_meta', 'wcmv_pro_guardar_datos_orden');
 function wcmv_pro_guardar_datos_orden($order_id)
@@ -328,8 +328,48 @@ function wcmv_pro_guardar_datos_orden($order_id)
         return;
 
     require_once(ABSPATH . 'wp-admin/includes/file.php');
-    $upload_overrides = array('test_form' => false);
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
     $has_changes = false;
+
+    // Función para desviar temporalmente los vouchers a una carpeta privada
+    $wcmv_directorio_vouchers = function ($param) {
+        $subdir = '/vouchers_pro';
+        $param['path'] = $param['basedir'] . $subdir;
+        $param['url'] = $param['baseurl'] . $subdir;
+        $param['subdir'] = $subdir;
+        return $param;
+    };
+
+    // Función auxiliar para procesar la subida y compresión
+    $procesar_voucher = function ($archivo, $order_id) use ($wcmv_directorio_vouchers) {
+        $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+        $archivo['name'] = 'voucher-pedido-' . $order_id . '-' . time() . '.' . $extension;
+
+        add_filter('upload_dir', $wcmv_directorio_vouchers);
+        $movefile = wp_handle_upload($archivo, array('test_form' => false));
+        remove_filter('upload_dir', $wcmv_directorio_vouchers);
+
+        if ($movefile && !isset($movefile['error'])) {
+
+            // MOTOR DE COMPRESIÓN DE IMAGEN
+            $file_type = wp_check_filetype($movefile['file']);
+            if (strpos($file_type['type'], 'image/') === 0) {
+                $image = wp_get_image_editor($movefile['file']);
+                if (!is_wp_error($image)) {
+                    // Reducir tamaño máximo a 1000px y mantener proporción
+                    $image->resize(1000, 1000, false);
+                    // Reducir calidad JPEG/WebP a 75%
+                    $image->set_quality(75);
+                    // Guardar los cambios sobre el mismo archivo
+                    $image->save($movefile['file']);
+                }
+            }
+
+            return $movefile['url'];
+        }
+        return false;
+    };
+
 
     // BILLETERAS
     if ($_POST['payment_method'] === 'wcmv_billeteras_pro' && !empty($_POST['wcmv_billetera_seleccionada'])) {
@@ -339,7 +379,17 @@ function wcmv_pro_guardar_datos_orden($order_id)
         $has_changes = true;
 
         if (!empty($_FILES['wcmv_voucher_billetera']['name'])) {
-            $movefile = wp_handle_upload($_FILES['wcmv_voucher_billetera'], $upload_overrides);
+            $archivo = $_FILES['wcmv_voucher_billetera'];
+
+            // Renombrado Inteligente
+            $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+            $archivo['name'] = 'voucher-pedido-' . $order_id . '-' . time() . '.' . $extension;
+
+            // Desviar a carpeta oculta
+            add_filter('upload_dir', $wcmv_directorio_vouchers);
+            $movefile = wp_handle_upload($archivo, array('test_form' => false));
+            remove_filter('upload_dir', $wcmv_directorio_vouchers);
+
             if ($movefile && !isset($movefile['error'])) {
                 $order->update_meta_data('_captura_pago_url', $movefile['url']);
             } else {
@@ -357,7 +407,17 @@ function wcmv_pro_guardar_datos_orden($order_id)
         $has_changes = true;
 
         if (!empty($_FILES['wcmv_voucher_banco']['name'])) {
-            $movefile = wp_handle_upload($_FILES['wcmv_voucher_banco'], $upload_overrides);
+            $archivo = $_FILES['wcmv_voucher_banco'];
+
+            // Renombrado Inteligente
+            $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+            $archivo['name'] = 'voucher-pedido-' . $order_id . '-' . time() . '.' . $extension;
+
+            // Desviar a carpeta oculta
+            add_filter('upload_dir', $wcmv_directorio_vouchers);
+            $movefile = wp_handle_upload($archivo, array('test_form' => false));
+            remove_filter('upload_dir', $wcmv_directorio_vouchers);
+
             if ($movefile && !isset($movefile['error'])) {
                 $order->update_meta_data('_captura_pago_url', $movefile['url']);
             } else {
